@@ -1,0 +1,26 @@
+{
+  "name": "myexpress",
+  "version": "1.0.0",
+  "description": "- [Rules](#rules) - [Overview](#overview) - [Story](#story) - [Credits](#credits)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon dist/app.js",
+    "build": "tsc",
+    "start": "npm run build && node dist/app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xDeaa/myExpress.git"
+  },
+  "author": "Andrea Serrano",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/xDeaa/myExpress/issues"
+  },
+  "homepage": "https://github.com/xDeaa/myExpress#readme",
+  "devDependencies": {
+    "nodemon": "^1.19.3",
+    "tsc": "^1.20150623.0"
+  }
+}
