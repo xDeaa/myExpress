@@ -20,7 +20,9 @@
   },
   "homepage": "https://github.com/xDeaa/myExpress#readme",
   "devDependencies": {
+    "@types/node": "^12.11.1",
     "nodemon": "^1.19.3",
-    "tsc": "^1.20150623.0"
+    "tsc": "^1.20150623.0",
+    "typescript": "^3.6.4"
   }
 }
