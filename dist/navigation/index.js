@@ -9,13 +9,10 @@ class Navigation {
     }
     navigate(req, res) {
         const { method, url } = req;
-        const matchRoute = this.routes.find(route => {
-            console.log(route);
-            console.log(method);
-            console.log(req.url);
+        const response = this.handleResponse(res);
+        const matchRoute = this.routes.find((route) => {
             return route.method === method && route.url === url;
         });
-        console.log(matchRoute);
         if (matchRoute) {
             matchRoute.callback(req, res);
         }
@@ -23,15 +20,17 @@ class Navigation {
             res.write("404 not found");
             res.end();
         }
-        // console.log(index);
-        // if(index === -1) {
-        //     console.log(this.routes)
-        //     console.log(this.routes[index])
-        //     // this.routes[].callback(req,res);
-        // } else {
-        //     res.write("404 not found");
-        //     res.end();
-        // }
+    }
+    handleResponse(res) {
+        const json = (item) => {
+            res.write(JSON.stringify(item));
+            res.end();
+        };
+        const send = (content) => {
+            res.write(content);
+            res.end();
+        };
+        return Object.assign({}, { json, send }, res);
     }
 }
 exports.default = Navigation;
