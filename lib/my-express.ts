@@ -48,7 +48,7 @@ class myExpress {
         const mustaches = /{{ ?(\w+)(( ?[|] ?)((\w+)(\:(\w+))?))? ?}}/gi;
         
         const replaceContent = content.replace(mustaches, (item: string, ...args: any[]): string => {
-            const [key,,, pipe, transform,, number] = args
+            const [key, , , pipe, transform, , number]: string[] = args
             const value = param[key] || "undefined";
 
            if(pipe && transform) {

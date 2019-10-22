@@ -142,6 +142,8 @@ app.render('home', { name: 'Ch0pper', weight: 33.1337 }, (err, html) => {
 
 #### Advanced
 
+##### Middleware
+
 Now you **HAVE TO** handle the `app.use` method for middleware.
 This method take a callback with the following signature:
 
@@ -153,6 +155,25 @@ function (req, res, next) {
 ```
 
 > What is next ? ;)
+
+##### Query parameters and args
+
+Well, an API is better if we can handle all parameters send by the client.
+You **HAVE TO** handle all of them ;D
+
+```js
+app.get('/user/:id', (req, res) => {
+  const { id } = req.params
+  console.log(`The user id is ${id}`)
+  // ...
+})
+
+app.get('/users?limit=42&status=ADMIN', (req, res) => {
+  const { limit, status } = req.qParams
+  console.log(`The limitation is ${limit} for ${status} users`)
+  // ...
+})
+```
 
 ## <a name='bonus'>🦄 Bonus</a>
 
