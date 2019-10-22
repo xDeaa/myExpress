@@ -82,7 +82,7 @@ class myExpress {
         if (matched) {
             const regexStr = url.replace(/\//g, "\\/").replace(/(:([\w]+))/, (_, ...args: any[]): string => {
                 const [, param] = args
-                return `(<${param}>\\w+)`
+                return `(?<${param}>\\w+)`
             })
 
             const regex = new RegExp(`^${regexStr}(\\/)?(\\?.*)?$`)
@@ -92,7 +92,6 @@ class myExpress {
         } else {
             this.router.newRoute({method,url,callback,regex: null});
         }
-        // this.router.newRoute({method,url,callback,regex: null});
     }
 
     listen(port: number, callback: () => void): void{

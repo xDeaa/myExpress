@@ -36,10 +36,17 @@ app.get('/welcome', (request: IncomingMessage, response: ServerResponse) => {
   })                                     
 })
 
-app.get('/users/:id', (request: IncomingMessage, response: ServerResponse) => {
-  const id = app.handleParameters(request.url)
+app.get('/users/:id', (request: Request, response: ServerResponse) => {
+  const {id} = request.params;
+  console.log(`user  id is ${id}`)
   response.end();        
 })
+
+app.get('/users?limit=42&status=ADMIN', (request: Request, response: ServerResponse) => {
+    const { limit, status } = request.query
+    console.log(`The limitation is ${limit} for ${status} users`);
+    response.end();        
+  })
 
 app.post('/post', (request: IncomingMessage, response: ServerResponse) => {
   app.render('post', {weight:33.1337 }, (error: Error, html: string): void=> {

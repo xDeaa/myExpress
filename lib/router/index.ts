@@ -1,4 +1,5 @@
 import {IncomingMessage, ServerResponse} from 'http';
+import { parse } from 'querystring';
 interface Route {
     method: string,
     url: string,
@@ -21,9 +22,25 @@ export default class Router {
 
     navigate(req: IncomingMessage, res: ServerResponse) {
         const { method, url } : IncomingMessage  = req;
+        const request: Request = req;
         const response = this.handleResponse(res);
         const matchRoute = this.routes.find((route) => {
-            return route.method === method && route.url === url
+
+            if (route.method !== req.method && route.method !== "ALL") { return false }
+
+                const matcher = url.match(route.regex)
+                const isMatched = matcher && matcher.length > 0
+
+                if (!isMatched && route.url !== req.url) { return false }
+
+                request.params = {}
+                if (isMatched) {
+                    request.params = matcher.groups
+                }
+
+                request.query = {}
+
+                return true
         });
 
         if(matchRoute) {
