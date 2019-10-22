@@ -38,7 +38,7 @@ class myExpress {
         this.navigation.newRoute({ method: TypeNavigation_1.default.DELETE, url, callback });
     }
     all(url, callback) {
-        // this.navigation.newRoute({method: "GET", url, callback});
+        this.navigation.newRoute({ method: TypeNavigation_1.default.ALL, url, callback });
     }
     render(filename, param, callback) {
         const pathName = path.join(this.main_directory, this.pages_directory, `${filename}${this.pages_exetension}`);
@@ -60,6 +60,7 @@ class myExpress {
                         return trans ? trans(value) : value;
                 }
             }
+            return value;
         });
         callback(null, replaceContent);
     }

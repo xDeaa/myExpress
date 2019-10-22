@@ -9,7 +9,13 @@ export default class Navigation {
     private routes: Route[] = [];
 
     newRoute (route:Route) {
-        this.routes.push(route);
+        if (route.method === "ALL") {
+            for (let method of ["GET","POST","PUT","DELETE"]) {
+                this.routes.push({method, url: route.url, callback: route.callback});
+            }
+        } else {
+            this.routes.push(route);
+        }
     }
 
     navigate(req: IncomingMessage, res: ServerResponse) {

@@ -6,6 +6,7 @@ var Type;
     Type["POST"] = "POST";
     Type["PUT"] = "PUT";
     Type["DELETE"] = "DELETE";
+    Type["ALL"] = "ALL";
 })(Type || (Type = {}));
 exports.default = Type;
 //# sourceMappingURL=TypeNavigation.js.map

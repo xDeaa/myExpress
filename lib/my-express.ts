@@ -33,7 +33,7 @@ class myExpress {
     }
 
     all(url: string, callback: Function) {
-        // this.navigation.newRoute({method: "GET", url, callback});
+        this.navigation.newRoute({method: TypeNavigation.ALL, url, callback});
     }
 
     render(filename: string,param: any, callback: (error: Error, html: string) => void) {
@@ -49,6 +49,7 @@ class myExpress {
         
         const replaceContent = content.replace(mustaches, (item: string, ...args: any[]): string => {
             const [key, , , pipe, transform, , number]: string[] = args
+        
             const value = param[key] || "undefined";
 
            if(pipe && transform) {
@@ -60,6 +61,8 @@ class myExpress {
                         return trans ? trans(value) : value;
                 }
            }
+
+           return value;
         })
 
         callback(null, replaceContent);

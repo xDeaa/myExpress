@@ -6,6 +6,11 @@ class Navigation {
     }
     newRoute(route) {
         this.routes.push(route);
+        if (route.method === "ALL") {
+            for (let method of ["GET", "POST", "PUT", "DELETE"]) {
+                this.routes.push({ method, url: route.url, callback: route.callback });
+            }
+        }
     }
     navigate(req, res) {
         const { method, url } = req;
