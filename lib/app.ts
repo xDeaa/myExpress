@@ -1,11 +1,24 @@
 import myExpress from './my-express';
 import {IncomingMessage, ServerResponse} from 'http';
-// myExpress();
-const app = new myExpress();
-app.init();
-app.get('test', (request: IncomingMessage, response: ServerResponse) => {
-    // console.log(request);
-    response.write("Bienvenue sur test");
+
+const app = myExpress();
+const port: number = 4242;
+app.get('/test', (request: IncomingMessage, response: ServerResponse) => {
+  app.render('home', { name: 'Ch0pper', weight:33.1337 }, (error: Error, html: string): void=> {
+    response.setHeader('Content-Type', 'text/html');
+
+    if(error) {
+      response.writeHead(500);
+      response.write(error.toString());
+    } else {
+      response.writeHead(200);
+      response.write(html)
+    }
+    
     response.end();
+  })                                     
 })
-app.listen(4242)
+
+
+
+app.listen(port, () => {console.log(`Server listenning on ${port} port`)});
