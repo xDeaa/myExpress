@@ -49,11 +49,16 @@ class myExpress {
         const content = fs_1.readFileSync(pathName, "utf-8");
         const mustaches = /{{ ?(\w+)(( ?[|] ?)((\w+)(\:(\w+))?))? ?}}/gi;
         const replaceContent = content.replace(mustaches, (item, ...args) => {
-            const [key, , pipe, transform] = args;
+            const [key, , , pipe, transform, , number] = args;
             const value = param[key] || "undefined";
             if (pipe && transform) {
                 const trans = this[`${transform}`];
-                return trans ? trans(value) : value;
+                switch (transform.toLowerCase()) {
+                    case 'fixed':
+                        return trans ? trans(value, number) : value;
+                    default:
+                        return trans ? trans(value) : value;
+                }
             }
         });
         callback(null, replaceContent);
@@ -63,6 +68,9 @@ class myExpress {
     }
     lower(string) {
         return string.toLowerCase();
+    }
+    fixed(string, fixed) {
+        return parseFloat(string).toFixed(fixed);
     }
     listen(port, callback) {
         this.httpSever.listen(port, callback);

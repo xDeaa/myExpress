@@ -4,7 +4,7 @@ import {IncomingMessage, ServerResponse} from 'http';
 const app = myExpress();
 const port: number = 4242;
 app.get('/test', (request: IncomingMessage, response: ServerResponse) => {
-  app.render('home', { name: 'Ch0pper', age:263 }, (error: Error, html: string): void=> {
+  app.render('home', { name: 'Ch0pper', weight:33.1337 }, (error: Error, html: string): void=> {
     response.setHeader('Content-Type', 'text/html');
 
     if(error) {

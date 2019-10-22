@@ -46,14 +46,19 @@ class myExpress {
 
         const content = readFileSync(pathName, "utf-8");
         const mustaches = /{{ ?(\w+)(( ?[|] ?)((\w+)(\:(\w+))?))? ?}}/gi;
+        
         const replaceContent = content.replace(mustaches, (item: string, ...args: any[]): string => {
-            const [key,, pipe, transform] = args
+            const [key,,, pipe, transform,, number] = args
             const value = param[key] || "undefined";
 
            if(pipe && transform) {
-               const trans: Function = this[`${transform}`];
-
-               return trans ? trans(value) : value; 
+                const trans: Function = this[`${transform}`];
+                switch(transform.toLowerCase()) {
+                    case 'fixed':
+                        return trans ? trans(value, number) : value;
+                    default:
+                        return trans ? trans(value) : value;
+                }
            }
         })
 
@@ -68,8 +73,8 @@ class myExpress {
         return string.toLowerCase();
     }
 
-    fixed() {
-
+    fixed(string: string, fixed: number) {
+        return parseFloat(string).toFixed(fixed);
     }
 
     listen(port: number, callback: () => void): void{
