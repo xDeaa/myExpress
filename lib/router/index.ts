@@ -27,8 +27,7 @@ export default class Router {
         const matchRoute = this.routes.find((route) => {
 
             if (route.method !== req.method && route.method !== "ALL") { return false }
-
-                const matcher = url.match(route.regex)
+                const matcher   = url.match(route.regex)
                 const isMatched = matcher && matcher.length > 0
 
                 if (!isMatched && route.url !== req.url) { return false }
@@ -44,7 +43,7 @@ export default class Router {
         });
 
         if(matchRoute) {
-            matchRoute.callback(req, res);
+            matchRoute.callback(req, response);
         } else {
             res.write("404 not found");
             res.end();
