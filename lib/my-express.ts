@@ -2,7 +2,6 @@ import { Server, IncomingMessage, ServerResponse, createServer } from 'http';
 import {existsSync, readFile, readFileSync} from 'fs';
 import * as path from 'path';
 import Router from './router';
-import TypeRoute from './Router/TypeRoute';
 
 class myExpress {
     private httpSever: Server;
@@ -12,28 +11,18 @@ class myExpress {
     private readonly pages_exetension = ".html";
 
     constructor() {
+        this.init();
         this.httpSever = createServer((req: IncomingMessage, res: ServerResponse) => {
             this.router.navigate(req, res);
         })
     }
 
-    get(url: string, callback: Function): void {
-        this.router.newRoute({method: TypeRoute.GET , url, callback});
-    }
-    post(url: string, callback: Function): void {
-        this.router.newRoute({method: TypeRoute.POST, url, callback});
-    }
-    
-    put(url: string, callback: Function): void{
-        this.router.newRoute({method: TypeRoute.PUT, url, callback});
-    }
-
-    delete(url: string, callback: Function): void{
-        this.router.newRoute({method: TypeRoute.DELETE, url, callback});
-    }
-
-    all(url: string, callback: Function) {
-        this.router.newRoute({method: TypeRoute.ALL, url, callback});
+    private init() {
+        for(let method of ["GET","POST","PUT","DELETE", "ALL"]) {
+            this[method.toLowerCase()] = (url: string, callback: Function): void => {
+                this.handleParameters(url, method, callback);
+            }            
+        }
     }
 
     render(filename: string,param: any, callback: (error: Error, html: string) => void) {
@@ -49,7 +38,6 @@ class myExpress {
         
         const replaceContent = content.replace(mustaches, (item: string, ...args: any[]): string => {
             const [key, , , pipe, transform, , number]: string[] = args
-        
             const value = param[key] || "undefined";
 
            if(pipe && transform) {
@@ -78,6 +66,33 @@ class myExpress {
 
     fixed(string: string, fixed: number) {
         return parseFloat(string).toFixed(fixed);
+    }
+
+    handleParameters(url: string, method: string, callback: Function) {
+        const findRoute = this.router.routes.find((route) => {
+            return route.method === method && route.url === url
+        });
+        
+        if(findRoute) {
+            return findRoute.callback;
+        }
+        const values = /(|)([:|?|&]\w*)/gi;
+        const matched = url.match(values);
+        
+        if (matched) {
+            const regexStr = url.replace(/\//g, "\\/").replace(/(:([\w]+))/, (_, ...args: any[]): string => {
+                const [, param] = args
+                return `(<${param}>\\w+)`
+            })
+
+            const regex = new RegExp(`^${regexStr}(\\/)?(\\?.*)?$`)
+
+            this.router.newRoute({method,url,callback,regex});
+            
+        } else {
+            this.router.newRoute({method,url,callback,regex: null});
+        }
+        // this.router.newRoute({method,url,callback,regex: null});
     }
 
     listen(port: number, callback: () => void): void{

@@ -2,16 +2,17 @@ import {IncomingMessage, ServerResponse} from 'http';
 interface Route {
     method: string,
     url: string,
-    callback: Function
+    callback: Function,
+    regex: RegExp | null
 }
 
 export default class Router {
-    private routes: Route[] = [];
+    public readonly routes: Route[] = [];
 
-    newRoute (route:Route) {
+    newRoute(route:Route) {
         if (route.method === "ALL") {
             for (let method of ["GET","POST","PUT","DELETE"]) {
-                this.routes.push({method, url: route.url, callback: route.callback});
+                this.routes.push({method, url: route.url, callback: route.callback, regex: route.regex});
             }
         } else {
             this.routes.push(route);
@@ -27,7 +28,6 @@ export default class Router {
 
         if(matchRoute) {
             matchRoute.callback(req, res);
-
         } else {
             res.write("404 not found");
             res.end();

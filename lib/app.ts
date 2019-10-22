@@ -36,6 +36,11 @@ app.get('/welcome', (request: IncomingMessage, response: ServerResponse) => {
   })                                     
 })
 
+app.get('/users/:id', (request: IncomingMessage, response: ServerResponse) => {
+  const id = app.handleParameters(request.url)
+  response.end();        
+})
+
 app.post('/post', (request: IncomingMessage, response: ServerResponse) => {
   app.render('post', {weight:33.1337 }, (error: Error, html: string): void=> {
     response.setHeader('Content-Type', 'text/html');
