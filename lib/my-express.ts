@@ -1,39 +1,39 @@
 import { Server, IncomingMessage, ServerResponse, createServer } from 'http';
 import {existsSync, readFile, readFileSync} from 'fs';
 import * as path from 'path';
-import Navigation from './navigation';
-import TypeNavigation from './navigation/TypeNavigation';
+import Router from './router';
+import TypeRoute from './Router/TypeRoute';
 
 class myExpress {
     private httpSever: Server;
-    private navigation: Navigation = new Navigation();
+    private router: Router = new Router();
     private readonly main_directory = "lib"
     private readonly pages_directory = "pages";
     private readonly pages_exetension = ".html";
 
     constructor() {
         this.httpSever = createServer((req: IncomingMessage, res: ServerResponse) => {
-            this.navigation.navigate(req, res);
+            this.router.navigate(req, res);
         })
     }
 
     get(url: string, callback: Function): void {
-        this.navigation.newRoute({method: TypeNavigation.GET , url, callback});
+        this.router.newRoute({method: TypeRoute.GET , url, callback});
     }
     post(url: string, callback: Function): void {
-        this.navigation.newRoute({method: TypeNavigation.POST, url, callback});
+        this.router.newRoute({method: TypeRoute.POST, url, callback});
     }
     
     put(url: string, callback: Function): void{
-        this.navigation.newRoute({method: TypeNavigation.PUT, url, callback});
+        this.router.newRoute({method: TypeRoute.PUT, url, callback});
     }
 
     delete(url: string, callback: Function): void{
-        this.navigation.newRoute({method: TypeNavigation.DELETE, url, callback});
+        this.router.newRoute({method: TypeRoute.DELETE, url, callback});
     }
 
     all(url: string, callback: Function) {
-        this.navigation.newRoute({method: TypeNavigation.ALL, url, callback});
+        this.router.newRoute({method: TypeRoute.ALL, url, callback});
     }
 
     render(filename: string,param: any, callback: (error: Error, html: string) => void) {

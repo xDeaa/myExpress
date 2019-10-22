@@ -5,7 +5,7 @@ interface Route {
     callback: Function
 }
 
-export default class Navigation {
+export default class Router {
     private routes: Route[] = [];
 
     newRoute (route:Route) {
