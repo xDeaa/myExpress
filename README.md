@@ -15,7 +15,7 @@ Hi, here are some rules to carry out this story oav;
 ```sh
 ~/codeflix/onecode/myExpress ❯❯❯ cat -e .author.json
 {
-  "username": "majdi"
+  "username": "ch0pper"
 }$
 ```
 
@@ -54,6 +54,14 @@ You **HAVE TO** and handle the following properties:
 - `app.all()`
 - `app.listen()`
 
+Exemple:
+
+```js
+app.get('/api', (req, res) => {
+  res.json({ hello: 'From API' })
+})
+```
+
 #### Rendering
 
 You **HAVE TO** add a render method that follow express rules:
@@ -64,7 +72,7 @@ app.render('home', (err, html) => {
 })
 
 app.render('home', { name: 'Ch0pper' }, (err, html) => {
-  // ...
+  res.send(html)
 })
 ```
 
